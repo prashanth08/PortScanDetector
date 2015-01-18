@@ -1,0 +1,104 @@
+README file. Please fill out this file before submission. 80 char line limit.
+Unless otherwise stated, the number of > marks indicates the maximum acceptable
+input rows (we will trim extraneous lines that go beyond this limit, so don't
+be sneaky and insert extra > marks). Your responses in this file contribute to
+your homework grade, so don't omit any questions!
+
+CS5434 Homework 2: Port scan detector
+-------------------------------------------------------------------------------
+> Student name : Prashanth Basappa		
+> NetID        : pb476
+
+-------------------------------------------------------------------------------
+1. We again need to be sure that you understand the important notice posted on
+   page one of the homework. In your own words, please re-summarize it.
+
+> If we run exploits or network reconnaissance on systems that are not meantfor 
+> this course, we will be in serious trouble. I will keep all my activities
+> on this virtual machine.
+
+-------------------------------------------------------------------------------
+2. We also need to be sure that you understand and have adhered to the academic
+   integrity policies as outlined by the University. Please state here if you
+   have read them and you comprehend the consequences of violating these
+   policies.
+
+> I will submit all the work achieved by my own individual effort. There will
+> no collaboration with any other student. If found guilty of violating these
+> rules, there may be serious consequences including expulsion.
+-------------------------------------------------------------------------------
+3. Did you do this homework on your own? (General discussion with other
+   students is fine; sharing code or copying from the Internet is not
+   acceptable.)
+
+> Yes, this homework was done by me.
+
+-------------------------------------------------------------------------------
+4. Briefly explain the importance of network byte ordering in packet headers.
+
+> If the sending and receiving machine don't have the same byte order,then the
+> receiver cannot interpret the data sent and will read as garbage. Hence, the 
+> Internet specifies a canonical byte order convention known as network byteorder.
+
+-------------------------------------------------------------------------------
+5. How big is (a) the ethernet header, (b) a typical IP header with no options,
+   (c) a typical TCP header with no options and (d) a typical UDP header?
+   Answer in bytes.
+
+> Ethernet header            : 14
+> IP header with no options  : 20
+> TCP header with no options : 20
+> UDP header                 : 8
+
+-------------------------------------------------------------------------------
+6. Is the Sophos port scan detection heuristic foolproof? Briefly explain why.
+
+> No,it is not foolproof.The Sophos detection time range is 300ms and detection 
+> score must exceed 21 for a single source IP address. So if our client-side 
+> port scanner can scan minimum number of open ports or if it can increase its 
+> detection time range, it can bypass the Sophos port scan detection. Also,
+> Sophos only detects SYN scans - other scanning methods (FIN, XMAS) aren't 
+> being dealt with and an attacker that uses these could get away undetected.
+
+-------------------------------------------------------------------------------
+7. One way to implement the port scan detector is to buffer all packets within
+   the last 300ms and then inspect them every 1ms to search for port scans. Why
+   is this a bad idea? How did/would you implement the inspection algorithm
+   so that it does not depend on packet buffering?
+
+> Buffering all packets within the last 300ms is a bad idea. It 
+> increases the probability of buffer overflow and causes latency delay
+> in processing packets. The detector should parse multiple buffers for 
+> 300 overlapping windows - making the solution trivial. Also,
+> a packet's lifetime might have run out.
+> I would implement the inspection algorithm by keeping a 
+> run time window buffer that keeps track of packet timestamps 
+> and only counts those that have been received in the last 300ms.
+
+-------------------------------------------------------------------------------
+8. Before submission, did you make sure that your .zip file contains only 
+   detector.c, detector.h and this README file?
+
+> Yes.
+
+-------------------------------------------------------------------------------
+9. (this question is not graded and is optional). Did you enjoy this homework?
+   Was it very educational? What suggestions do you have to improve future
+   iterations of this assignment? Also feel free to add any other comments
+   here.
+
+> Yes, it was educational. I was exposed to libpcap and network byte addressing.
+> The tutorial class meant for this HW was very useful.
+> Also, I would like to see more TA hours every week, so that it doesn't 
+> become hectic towards the end.
+> 
+
+-------------------------------------------------------------------------------
+Part I
+>When nmap was used to determine the open ports in the virtual machine, only
+>PORT 631 was open. It's protocol is TCP and its service IPP(Internet Printing 
+>Protocol). It is not critical to the functioning of the OS, unless the OS needs 
+>to print something.
+
+
+
